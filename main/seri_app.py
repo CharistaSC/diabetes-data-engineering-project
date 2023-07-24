@@ -80,31 +80,32 @@ def display_evaluation_results():
                 col1.markdown(table_content, unsafe_allow_html=True)
                 space.markdown("<br>", unsafe_allow_html=True)  # Add a space between rows
 
-
 def evaluations_page():
     st.title("Model Evaluations")
     st.write("In this section, you can find the evaluations of the model related to the uploaded images.")
     st.write("This section provides a visual representation of the model's predictions and their probabilities for each uploaded image.")
     st.write("The bar chart shows the probability distribution of different classes for each image.")
-    display_evaluation_results()
+
+    # Check if there are uploaded images in the session state
+    if "uploaded_images" in st.session_state and len(st.session_state.uploaded_images) > 0:
+        display_evaluation_results()
+    else:
+        st.write("Please upload eye fundus images for evaluation.")
 
 # Main App
 def main():
-    # Increase font size for the navigation bar
-    st.markdown("<style>div[role='navigation'] { font-size: 25px; }</style>", unsafe_allow_html=True)
-    st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Go to", options=["Welcome", "Upload Image", "Evaluations"])
+    # Set the style for the navigation bar header and subheader
+    st.sidebar.markdown("<h1 style='font-weight: bold; font-size: 30px;'>🔬👁️ Diabetic Retinopathy Detection App</h1>", unsafe_allow_html=True)
+    st.sidebar.subheader("Navigation")
 
-    if page == "Welcome":
+    page = st.sidebar.radio("Go to", options=["💫 Welcome", "💻 Upload Image", "📊 Evaluations"])
+    
+    if page == "💫 Welcome":
         welcome_page()
-        st.experimental_rerun()  # Rerun the app to apply any changes in the welcome page
-    elif page == "Upload Image":
+    elif page == "💻 Upload Image":
         upload_image_page()
-    elif page == "Evaluations":
+    elif page == "📊 Evaluations":
         evaluations_page()
-
-if __name__ == "__main__":
-    main()
 
 if __name__ == "__main__":
     main()
