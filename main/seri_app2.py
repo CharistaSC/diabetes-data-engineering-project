@@ -2,6 +2,7 @@ import streamlit as st
 from transformers import ViTFeatureExtractor, ViTForImageClassification
 from PIL import Image
 import io
+import matplotlib.pyplot as plt
 
 # Load Pre-trained model from Huggingface and feature extractor
 model_name = "rafalosa/diabetic-retinopathy-224-procnorm-vit"
@@ -38,14 +39,14 @@ def upload_image_page():
             class_names = ["No DR", "Mild DR", "Moderate DR", "Severe DR", "Proliferative DR"]
             prediction_probabilities = probabilities[0].tolist()
 
-            # Store the uploaded image data as bytes
+            # Store the uploaded image data in the session state
             st.session_state.uploaded_images.append(
                 {
                     "uploaded_file": uploaded_file,
                     "image_data": image_data,
                     "predictions": prediction_probabilities,
                     "class_names": class_names,
-                    "robustness_evaluation": {},  # You can initialize evaluation results here
+                    "robustness_evaluation": {},
                     "ood_detection_evaluation": {},
                     "computational_efficiency_evaluation": {},
                     "model_calibration_evaluation": {},
@@ -53,6 +54,8 @@ def upload_image_page():
                     "ethical_considerations": {},
                 }
             )
+
+
 
 def robustness_evaluation():
     st.title("Robustness Evaluation")
@@ -70,7 +73,13 @@ def robustness_evaluation():
             "f1_score": 0.84,
         }
 
+        uploaded_file = uploaded_image_data["uploaded_file"]
+        st.image(uploaded_file, caption=f"Uploaded Image", use_column_width=True)
+
         uploaded_image_data["robustness_evaluation"] = robustness_results
+
+        # Plot the evaluation results as a bar chart
+        st.bar_chart(robustness_results)
 
 def ood_detection_evaluation():
     st.title("Out-of-Distribution Detection Evaluation")
@@ -88,7 +97,15 @@ def ood_detection_evaluation():
             "f1_score": 0.77,
         }
 
+        uploaded_file = uploaded_image_data["uploaded_file"]
+        st.image(uploaded_file, caption=f"Uploaded Image", use_column_width=True)
+
         uploaded_image_data["ood_detection_evaluation"] = ood_results
+
+        # Plot the evaluation results as a bar chart
+        st.bar_chart(ood_results)
+
+# ... (other evaluation functions remain the same)
 
 #def computational_efficiency_evaluation():
     #st.title("Computational Efficiency Evaluation")
@@ -131,6 +148,7 @@ def evaluations_page():
         robustness_evaluation()
     elif evaluation_type == "Out-of-Distribution Detection":
         ood_detection_evaluation()
+    # ... (other evaluation functions remain the same)
     #elif evaluation_type == "Computational Efficiency":
        # computational_efficiency_evaluation()
     #elif evaluation_type == "Model Calibration":
@@ -160,14 +178,17 @@ def display_evaluation_results():
 
 # Main App
 def main():
-    st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Go to", options=["Welcome", "Upload Image", "Evaluations"])
+    # Set the style for the navigation bar header and subheader
+    st.sidebar.markdown("<h1 style='font-weight: bold; font-size: 30px;'>🔬👁️ Diabetic Retinopathy Detection App</h1>", unsafe_allow_html=True)
+    st.sidebar.subheader("Navigation")
+
+    page = st.sidebar.radio("Go to", options=["💫 Welcome", "💻 Upload Image", "📊 Evaluations"])
     
-    if page == "Welcome":
+    if page == "💫 Welcome":
         welcome_page()
-    elif page == "Upload Image":
+    elif page == "💻 Upload Image":
         upload_image_page()
-    elif page == "Evaluations":
+    elif page == "📊 Evaluations":
         evaluations_page()
 
 if __name__ == "__main__":
