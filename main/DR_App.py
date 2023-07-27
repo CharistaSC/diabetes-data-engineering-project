@@ -1,25 +1,11 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import streamlit as st
-from transformers import ViTFeatureExtractor, ViTForImageClassification
+from transformers import ViTImageProcessor, ViTForImageClassification
 from PIL import Image
 
-
-# In[2]:
-
-
-# Load Pre-trained model from Huggingface and feature extractor
+# Load Pre-trained model from Huggingface and image processor
 model_name = "rafalosa/diabetic-retinopathy-224-procnorm-vit"
-feature_extractor = ViTFeatureExtractor.from_pretrained(model_name)
+processor = ViTImageProcessor.from_pretrained(model_name)
 model = ViTForImageClassification.from_pretrained(model_name)
-
-
-# In[7]:
-
 
 # Create the Streamlit App
 
@@ -38,8 +24,8 @@ def upload_image_page():
         st.image(image, caption="Uploaded Image", use_column_width=True)
         
         # Process the image and get predictions
-        features = feature_extractor(images=image, return_tensors="pt")
-        outputs = model(**features)
+        inputs = processor(images=image, return_tensors="pt")
+        outputs = model(**inputs)
         logits = outputs.logits
         probabilities = logits.softmax(dim=1)
         class_names = ["No DR", "Mild DR", "Moderate DR", "Severe DR", "Proliferative DR"]
@@ -67,4 +53,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+    
