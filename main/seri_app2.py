@@ -1,15 +1,19 @@
 import streamlit as st
-from transformers import ViTFeatureExtractor, ViTForImageClassification
+from transformers import ViTImageProcessor, ViTForImageClassification
 from PIL import Image
 import io
 import matplotlib.pyplot as plt
 
 # Load Pre-trained model from Huggingface and feature extractor
 model_name = "rafalosa/diabetic-retinopathy-224-procnorm-vit"
-feature_extractor = ViTFeatureExtractor.from_pretrained(model_name)
+feature_extractor = ViTImageProcessor.from_pretrained(model_name)
 model = ViTForImageClassification.from_pretrained(model_name)
 
 # Create the Streamlit App
+
+# Initialize the uploaded_images attribute as an empty list
+if "uploaded_images" not in st.session_state:
+    st.session_state.uploaded_images = []
 
 # Page functions
 def welcome_page():
