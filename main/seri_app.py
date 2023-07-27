@@ -1,11 +1,11 @@
 import streamlit as st
-from transformers import ViTFeatureExtractor, ViTForImageClassification
+from transformers import ViTImageProcessor, ViTForImageClassification
 from PIL import Image
 import io
 
 # Load Pre-trained model from Huggingface and feature extractor
 model_name = "rafalosa/diabetic-retinopathy-224-procnorm-vit"
-feature_extractor = ViTFeatureExtractor.from_pretrained(model_name)
+feature_extractor = ViTImageProcessor.from_pretrained(model_name)
 model = ViTForImageClassification.from_pretrained(model_name)
 
 # Create the Streamlit App
