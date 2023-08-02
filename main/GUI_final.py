@@ -12,9 +12,26 @@ model = ViTForImageClassification.from_pretrained(model_name)
 # Page functions
 def welcome_page():
     st.title("Diabetic Retinopathy Detection App")
-    st.write("Welcome to the Diabetic Retinopathy Detection App! This app uses a pre-trained Vision Transformer model to classify eye fundus images for diabetic retinopathy.")
-    st.write("Please use the navigation on the left to upload an eye fundus image for prediction or to view the model evaluations.")
+    st.image("4 stages of diabetic retinopathy.png", caption="Image Source: https://www.dolmaneyecare.com/", use_column_width=True)
+    
+    #done by
+    st.markdown("<p style='font-size: 35px;'>Done By:</p>", unsafe_allow_html=True)
+    st.write("🧑‍💼Osama Rasheed Khan, 2203385")
+    st.write("🧕Seri Hanzalah Bte Haniffah, 2201601")
+    st.write("👨‍💼Tian Yue Xiao Bryon, 2201615")
+    
+     # Set the font size for the welcome message
+    st.markdown("<p style='font-size: 30px;'>Welcome to the Diabetic Retinopathy Detection App!</p>", unsafe_allow_html=True)
+    
+    st.write("This app uses a pre-trained Vision Transformer model to classify eye fundus images for diabetic retinopathy.")
 
+    # Style the key features with bold and green ticks
+    st.markdown("### Key Features:")
+    st.write("✓ Upload Eye Fundus Images for Prediction")
+    st.write("✓ View Model Evaluations and Insights")
+    
+    # Add left finger emoji
+    st.write("👈 Please use the navigation on the left to get started.")
 def upload_image_page():
     st.title("Upload Eye Fundus Image")
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
@@ -41,14 +58,17 @@ def evaluations_page():
 
 # Main App
 def main():
-    st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Go to", options=["Welcome", "Upload Image", "Evaluations"])
+    # Set the style for the navigation bar header and subheader
+    st.sidebar.markdown("<h1 style='font-weight: bold; font-size: 30px;'>🔬👁 Diabetic Retinopathy Detection App</h1>", unsafe_allow_html=True)
+    st.sidebar.subheader("Navigation")
+
+    page = st.sidebar.radio("Go to", options=["💫 Welcome", "💻 Upload Image", "📊 Evaluations"])
     
-    if page == "Welcome":
+    if page == "💫 Welcome":
         welcome_page()
-    elif page == "Upload Image":
+    elif page == "💻 Upload Image":
         upload_image_page()
-    elif page == "Evaluations":
+    elif page == "📊 Evaluations":
         evaluations_page()
 
 if __name__ == "__main__":
